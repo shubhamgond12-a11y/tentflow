@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Users, 
   UserPlus, 
@@ -12,12 +12,16 @@ import {
   Clock 
 } from 'lucide-react';
 
-export default function StaffView({ staff = [], onAddStaff }) {
+export default function StaffView({ staff = [], onUpdateStaff }) {
   const [activeTab, setActiveTab] = useState('attendance');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [leaveStaff, setLeaveStaff] = useState(null);
+  const [leaveStart, setLeaveStart] = useState(new Date().toISOString().split('T')[0]);
+  const [leaveEnd, setLeaveEnd] = useState('');
+  const [leaveReason, setLeaveReason] = useState('Going home');
 
   const [name, setName] = useState('');
   const [role, setRole] = useState('Main Supervisor');
@@ -47,13 +51,39 @@ export default function StaffView({ staff = [], onAddStaff }) {
     ]
   );
 
+  const updateStaffList = (updater) => setStaffList(updater);
+
+  useEffect(() => {
+    onUpdateStaff?.(staffList);
+  }, [staffList, onUpdateStaff]);
+
   const getAttendanceStatus = (member, dateStr) => {
     const record = member.attendance?.find(a => a.date === dateStr);
-    return record ? record.status : 'unmarked';
+    if (record) return record.status;
+    const isAway = member.leavePeriods?.some(period => period.startDate <= dateStr && period.endDate >= dateStr);
+    return isAway ? 'leave' : 'unmarked';
+  };
+
+  const handleSaveLeave = (e) => {
+    e.preventDefault();
+    if (!leaveStaff || leaveEnd < leaveStart) return;
+    updateStaffList(prev => prev.map(member => member.id === leaveStaff.id
+      ? { ...member, leavePeriods: [...(member.leavePeriods || []), { id: `l_${Date.now()}`, startDate: leaveStart, endDate: leaveEnd, reason: leaveReason }] }
+      : member));
+    setLeaveStaff(null);
+    setLeaveEnd('');
+    setLeaveReason('Going home');
+  };
+
+  const handleMarkInactive = (member) => {
+    updateStaffList(prev => prev.map(item => item.id === member.id
+      ? { ...item, employmentStatus: 'inactive', endDate: new Date().toISOString().split('T')[0] }
+      : item));
+    setSelectedStaff(null);
   };
 
   const handleMarkAttendance = (staffId, status, notes = '') => {
-    setStaffList(prev => prev.map(member => {
+    updateStaffList(prev => prev.map(member => {
       if (member.id !== staffId) return member;
       const existingIndex = member.attendance?.findIndex(a => a.date === selectedDate);
       let updatedAttendance = [...(member.attendance || [])];
@@ -67,7 +97,10 @@ export default function StaffView({ staff = [], onAddStaff }) {
   };
 
   const handleBulkMark = (status) => {
-    setStaffList(prev => prev.map(member => {
+    updateStaffList(prev => prev.map(member => {
+      const onLeave = member.leavePeriods?.some(period => period.startDate <= selectedDate && period.endDate >= selectedDate);
+      const inactive = member.employmentStatus === 'inactive' && member.endDate && member.endDate < selectedDate;
+      if (onLeave || inactive) return member;
       const existingIndex = member.attendance?.findIndex(a => a.date === selectedDate);
       let updatedAttendance = [...(member.attendance || [])];
       if (existingIndex >= 0) {
@@ -90,17 +123,18 @@ export default function StaffView({ staff = [], onAddStaff }) {
       attendance: [],
       payments: []
     };
-    setStaffList(prev => [...prev, newStaffMember]);
-    if (onAddStaff) onAddStaff(newStaffMember);
+    updateStaffList(prev => [...prev, newStaffMember]);
     setName('');
     setPhone('');
     setIsAddModalOpen(false);
   };
 
-  const totalStaffCount = staffList.length;
-  const presentCount = staffList.filter(s => getAttendanceStatus(s, selectedDate) === 'present').length;
-  const halfDayCount = staffList.filter(s => getAttendanceStatus(s, selectedDate) === 'halfday').length;
-  const absentCount = staffList.filter(s => getAttendanceStatus(s, selectedDate) === 'absent').length;
+  const activeStaff = staffList.filter(member => member.employmentStatus !== 'inactive' || !member.endDate || member.endDate >= selectedDate);
+  const totalStaffCount = activeStaff.length;
+  const presentCount = activeStaff.filter(s => getAttendanceStatus(s, selectedDate) === 'present').length;
+  const halfDayCount = activeStaff.filter(s => getAttendanceStatus(s, selectedDate) === 'halfday').length;
+  const absentCount = activeStaff.filter(s => getAttendanceStatus(s, selectedDate) === 'absent').length;
+  const leaveCount = activeStaff.filter(s => getAttendanceStatus(s, selectedDate) === 'leave').length;
 
   const calculateStaffMetrics = (member) => {
     const totalDaysWorked = member.attendance ? member.attendance.filter(a => a.status === 'present').length + (member.attendance.filter(a => a.status === 'halfday').length * 0.5) : 0;
@@ -180,7 +214,7 @@ export default function StaffView({ staff = [], onAddStaff }) {
       {/* ATTENDANCE TAB */}
       {activeTab === 'attendance' && (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
             <div className="p-4 rounded-2xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 shadow-sm">
               <div className="text-xs text-slate-500 dark:text-[#DCCCF7]/70">Total Workers</div>
               <div className="text-xl font-bold text-slate-900 dark:text-[#FFFFFF] mt-1">{totalStaffCount}</div>
@@ -196,6 +230,10 @@ export default function StaffView({ staff = [], onAddStaff }) {
             <div className="p-4 rounded-2xl bg-rose-500/10 dark:bg-[#8D2E6E]/30 border border-rose-500/20 dark:border-[#8D2E6E]/50 shadow-sm">
               <div className="text-xs text-rose-600 dark:text-[#DCCCF7] font-semibold">Absent</div>
               <div className="text-xl font-bold text-slate-900 dark:text-[#FFFFFF] mt-1">{absentCount}</div>
+            </div>
+            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 shadow-sm">
+              <div className="text-xs text-amber-700 dark:text-amber-300 font-semibold">On Leave / Away</div>
+              <div className="text-xl font-bold text-slate-900 dark:text-[#FFFFFF] mt-1">{leaveCount}</div>
             </div>
           </div>
 
@@ -240,7 +278,7 @@ export default function StaffView({ staff = [], onAddStaff }) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-[#642FCD]/20">
-                  {filteredStaff.map((member) => {
+                  {filteredStaff.filter(member => member.employmentStatus !== 'inactive' || !member.endDate || member.endDate >= selectedDate).map((member) => {
                     const status = getAttendanceStatus(member, selectedDate);
                     const currentRecord = member.attendance?.find(a => a.date === selectedDate);
 
@@ -252,6 +290,7 @@ export default function StaffView({ staff = [], onAddStaff }) {
                         
                         <td className="p-4">
                           <div className="flex items-center justify-center gap-1.5">
+                            {status === 'leave' && <span className="px-2 py-1.5 rounded-xl text-xs font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/30">On leave</span>}
                             <button
                               onClick={() => handleMarkAttendance(member.id, 'present', currentRecord?.notes || '')}
                               className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1 transition ${
@@ -350,15 +389,70 @@ export default function StaffView({ staff = [], onAddStaff }) {
                   </div>
                 </div>
 
-                <button 
-                  onClick={() => setSelectedStaff(member)}
-                  className="w-full py-2 rounded-xl bg-[#642FCD]/10 dark:bg-[#642FCD]/20 text-[#642FCD] dark:text-[#DCCCF7] text-xs font-semibold hover:bg-[#642FCD]/20 dark:hover:bg-[#642FCD]/30 transition border border-[#642FCD]/30"
-                >
-                  View Full Profile & History
-                </button>
+                {member.employmentStatus === 'inactive' && <p className="text-xs font-semibold text-slate-500">Former staff · left {member.endDate}</p>}
+                <div className="space-y-2">
+                  {member.employmentStatus !== 'inactive' && <button
+                    onClick={() => { setLeaveStaff(member); setLeaveStart(new Date().toISOString().split('T')[0]); }}
+                    className="w-full py-2 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-semibold hover:bg-amber-500/20 transition border border-amber-500/30"
+                  >Record Leave / Time Away</button>}
+                  <button
+                    onClick={() => setSelectedStaff(member)}
+                    className="w-full py-2 rounded-xl bg-[#642FCD]/10 dark:bg-[#642FCD]/20 text-[#642FCD] dark:text-[#DCCCF7] text-xs font-semibold hover:bg-[#642FCD]/20 dark:hover:bg-[#642FCD]/30 transition border border-[#642FCD]/30"
+                  >
+                    View Full Profile & History
+                  </button>
+                </div>
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* STAFF PROFILE & HISTORY */}
+      {selectedStaff && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/85 backdrop-blur-md" onClick={() => setSelectedStaff(null)}>
+          <section role="dialog" aria-modal="true" aria-labelledby="staff-profile-title" onClick={e => e.stopPropagation()} className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white dark:bg-[#090909] border border-[#642FCD]/40 shadow-2xl p-6 space-y-5 text-slate-900 dark:text-white">
+            <div className="flex justify-between items-start gap-4">
+              <div><p className="text-xs uppercase tracking-wide text-[#642FCD]">Staff profile</p><h3 id="staff-profile-title" className="text-xl font-bold mt-1">{selectedStaff.name}</h3><p className="text-sm text-slate-500 dark:text-[#DCCCF7]/70">{selectedStaff.role} · {selectedStaff.phone}</p></div>
+              <button type="button" onClick={() => setSelectedStaff(null)} aria-label="Close profile" className="p-2 rounded-xl bg-slate-100 dark:bg-[#642FCD]/20"><X size={18} /></button>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+              <div className="rounded-xl bg-slate-50 dark:bg-black p-3"><span className="block text-xs text-slate-500">Daily wage</span><b>₹ {selectedStaff.wage}</b></div>
+              <div className="rounded-xl bg-slate-50 dark:bg-black p-3"><span className="block text-xs text-slate-500">Days worked</span><b>{calculateStaffMetrics(selectedStaff).totalDaysWorked}</b></div>
+              <div className="rounded-xl bg-slate-50 dark:bg-black p-3"><span className="block text-xs text-slate-500">Total paid</span><b>₹ {calculateStaffMetrics(selectedStaff).totalPaid}</b></div>
+              <div className="rounded-xl bg-slate-50 dark:bg-black p-3"><span className="block text-xs text-slate-500">Balance due</span><b>₹ {calculateStaffMetrics(selectedStaff).balanceDue}</b></div>
+            </div>
+            <div><h4 className="font-semibold mb-2">Leave / time away</h4>
+              {(selectedStaff.leavePeriods || []).length === 0 ? <p className="text-sm text-slate-500">No leave recorded.</p> : <ul className="space-y-2">{[...(selectedStaff.leavePeriods || [])].sort((a,b) => b.startDate.localeCompare(a.startDate)).map(period => <li key={period.id} className="flex justify-between gap-3 rounded-xl bg-amber-500/10 p-3 text-sm"><span>{period.reason}</span><span className="text-right">{period.startDate} – {period.endDate}</span></li>)}</ul>}
+            </div>
+            <div><h4 className="font-semibold mb-2">Attendance history</h4>
+              {(selectedStaff.attendance || []).length === 0 ? <p className="text-sm text-slate-500">No attendance entries recorded.</p> : <div className="max-h-48 overflow-y-auto rounded-xl border border-slate-200 dark:border-[#642FCD]/20"><table className="w-full text-sm"><thead className="sticky top-0 bg-slate-100 dark:bg-black"><tr><th className="p-2 text-left">Date</th><th className="p-2 text-left">Status</th><th className="p-2 text-left">Notes</th></tr></thead><tbody>{[...(selectedStaff.attendance || [])].sort((a,b) => b.date.localeCompare(a.date)).map(record => <tr key={record.date} className="border-t border-slate-100 dark:border-[#642FCD]/20"><td className="p-2">{record.date}</td><td className="p-2 capitalize">{record.status}</td><td className="p-2">{record.notes || '—'}</td></tr>)}</tbody></table></div>}
+            </div>
+            <div><h4 className="font-semibold mb-2">Wage payments</h4>
+              {(selectedStaff.payments || []).length === 0 ? <p className="text-sm text-slate-500">No payments recorded.</p> : <ul className="space-y-2">{[...selectedStaff.payments].sort((a,b) => b.date.localeCompare(a.date)).map(payment => <li key={payment.id} className="flex justify-between rounded-xl bg-slate-50 dark:bg-black p-3 text-sm"><span>{payment.date} · {payment.mode}</span><b>₹ {payment.amount}</b></li>)}</ul>}
+            </div>
+            <div className="flex justify-between items-center border-t border-slate-200 dark:border-[#642FCD]/20 pt-4">
+              {selectedStaff.employmentStatus === 'inactive'
+                ? <button type="button" onClick={() => { const reactivated = { ...selectedStaff, employmentStatus: 'active', endDate: '' }; updateStaffList(prev => prev.map(member => member.id === selectedStaff.id ? reactivated : member)); setSelectedStaff(reactivated); }} className="text-sm font-semibold text-[#642FCD]">Reactivate staff</button>
+                : <button type="button" onClick={() => handleMarkInactive(selectedStaff)} className="text-sm font-semibold text-rose-600">Mark as no longer working</button>}
+              <button type="button" onClick={() => setSelectedStaff(null)} className="px-4 py-2 rounded-xl bg-[#642FCD] text-white text-sm font-semibold">Done</button>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {/* RECORD TIME AWAY */}
+      {leaveStaff && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/85 backdrop-blur-md" onClick={() => setLeaveStaff(null)}>
+          <section role="dialog" aria-modal="true" aria-labelledby="leave-title" onClick={e => e.stopPropagation()} className="w-full max-w-md rounded-3xl bg-white dark:bg-[#090909] border border-amber-500/40 shadow-2xl p-6 space-y-5 text-slate-900 dark:text-white">
+            <div className="flex justify-between items-start"><div><h3 id="leave-title" className="text-lg font-bold">Record time away</h3><p className="text-sm text-slate-500">{leaveStaff.name} will show as on leave during these dates.</p></div><button onClick={() => setLeaveStaff(null)} aria-label="Close" className="p-2 rounded-xl bg-slate-100 dark:bg-[#642FCD]/20"><X size={18} /></button></div>
+            <form onSubmit={handleSaveLeave} className="space-y-4">
+              <label className="block text-sm">Reason<select value={leaveReason} onChange={e => setLeaveReason(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-300 dark:border-[#642FCD]/40 bg-white dark:bg-black p-2.5"><option>Going home</option><option>Personal leave</option><option>Medical leave</option><option>Other</option></select></label>
+              <div className="grid grid-cols-2 gap-3"><label className="block text-sm">From<input required type="date" value={leaveStart} onChange={e => setLeaveStart(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-300 dark:border-[#642FCD]/40 bg-white dark:bg-black p-2.5" /></label><label className="block text-sm">Expected return<input required type="date" min={leaveStart} value={leaveEnd} onChange={e => setLeaveEnd(e.target.value)} className="mt-1 w-full rounded-xl border border-slate-300 dark:border-[#642FCD]/40 bg-white dark:bg-black p-2.5" /></label></div>
+              <p className="text-xs text-slate-500">Days in this period count as leave, not absence or paid work. You can mark the worker present if they return early.</p>
+              <div className="flex justify-end gap-2"><button type="button" onClick={() => setLeaveStaff(null)} className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-black text-sm">Cancel</button><button type="submit" disabled={!leaveEnd || leaveEnd < leaveStart} className="px-4 py-2 rounded-xl bg-[#642FCD] text-white text-sm font-semibold disabled:opacity-50">Save leave</button></div>
+            </form>
+          </section>
         </div>
       )}
 

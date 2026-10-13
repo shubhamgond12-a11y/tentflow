@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/Navbar';
@@ -91,6 +91,22 @@ function TentFlowApp() {
     }
   ]);
 
+  useEffect(() => {
+    try {
+      const savedStaff = localStorage.getItem('tentflow-staff');
+      if (savedStaff) {
+        const parsedStaff = JSON.parse(savedStaff);
+        if (Array.isArray(parsedStaff)) setStaff(parsedStaff);
+      }
+    } catch {
+      localStorage.removeItem('tentflow-staff');
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('tentflow-staff', JSON.stringify(staff));
+  }, [staff]);
+
   // Handlers for Data Mutation
   const handleSaveBooking = (newBooking) => {
     setEvents(prev => [...prev, { id: `e_${Date.now()}`, ...newBooking }]);
@@ -104,8 +120,8 @@ function TentFlowApp() {
     setInventory(prev => prev.map(item => item.id === updatedItem.id ? updatedItem : item));
   };
 
-  const handleAddStaffMember = (newStaff) => {
-    setStaff(prev => [...prev, newStaff]);
+  const handleUpdateStaff = (updatedStaff) => {
+    setStaff(updatedStaff);
   };
 
   return (
@@ -201,7 +217,7 @@ function TentFlowApp() {
             {activeTab === 'staff' && (
               <StaffView 
                 staff={staff} 
-                onAddStaff={handleAddStaffMember} 
+                onUpdateStaff={handleUpdateStaff}
                 strings={strings} 
               />
             )}
