@@ -55,12 +55,20 @@ function TentFlowApp() {
         }
       }
     } catch {
-      localStorage.removeItem('tentflow-business-profile');
+      try {
+        localStorage.removeItem('tentflow-business-profile');
+      } catch {
+        // Continue with the default profile when storage is unavailable.
+      }
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('tentflow-business-profile', JSON.stringify(businessProfile));
+    try {
+      localStorage.setItem('tentflow-business-profile', JSON.stringify(businessProfile));
+    } catch {
+      // App state remains usable for this session when storage is unavailable.
+    }
   }, [businessProfile]);
 
   // Equipment & Inventory State
@@ -123,12 +131,20 @@ function TentFlowApp() {
         if (Array.isArray(parsedStaff)) setStaff(parsedStaff);
       }
     } catch {
-      localStorage.removeItem('tentflow-staff');
+      try {
+        localStorage.removeItem('tentflow-staff');
+      } catch {
+        // Continue with the default staff list when storage is unavailable.
+      }
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('tentflow-staff', JSON.stringify(staff));
+    try {
+      localStorage.setItem('tentflow-staff', JSON.stringify(staff));
+    } catch {
+      // App state remains usable for this session when storage is unavailable.
+    }
   }, [staff]);
 
   // Handlers for Data Mutation

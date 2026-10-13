@@ -4,11 +4,19 @@ const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('tentflow_theme') || 'dark';
+    try {
+      return localStorage.getItem('tentflow_theme') || 'dark';
+    } catch {
+      return 'dark';
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem('tentflow_theme', theme);
+    try {
+      localStorage.setItem('tentflow_theme', theme);
+    } catch {
+      // Theme selection still works for this session when storage is unavailable.
+    }
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
