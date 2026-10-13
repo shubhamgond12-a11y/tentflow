@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FileText, Printer, Search, ShieldCheck, DollarSign, ArrowUpRight, X, Building2, CheckCircle2 } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 
 export default function InvoicesView({ events = [], businessProfile = {
   name: "swami tent house",
@@ -8,6 +9,11 @@ export default function InvoicesView({ events = [], businessProfile = {
   gstin: "09AABCU9603R1ZM",
   defaultGstRate: 18,
   upiId: "swamitent@upi",
+  bankName: "",
+  bankAccountName: "",
+  bankAccountNumber: "",
+  bankIfsc: "",
+  bankBranch: "",
   terms: "1. Advance payment is non-refundable.\n2. Any damages to inventory at venue will be charged."
 }, strings }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -84,6 +90,24 @@ export default function InvoicesView({ events = [], businessProfile = {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const getBalanceDue = (invoice) => {
+    if (invoice.balanceDue != null) return Math.max(0, Number(invoice.balanceDue) || 0);
+    const taxable = Math.max(0, (invoice.subtotal || 0) - (invoice.discount || 0));
+    const total = taxable * (1 + (invoice.isGstBill ? (invoice.gstRate || 0) : 0) / 100);
+    const paid = (invoice.payments || []).reduce((sum, payment) => sum + (Number(payment.amount) || 0), 0);
+    return Math.max(0, total - paid);
+  };
+
+  const getUpiPaymentLink = (invoice) => {
+    const upiId = businessProfile.upiId?.trim();
+    if (!upiId) return '';
+    const params = new URLSearchParams({ pa: upiId, pn: businessProfile.name || 'Business', cu: 'INR' });
+    const balanceDue = getBalanceDue(invoice);
+    if (balanceDue > 0) params.set('am', balanceDue.toFixed(2));
+    if (invoice.name) params.set('tn', `Invoice payment - ${invoice.name}`);
+    return `upi://pay?${params.toString()}`;
   };
 
   return (
@@ -355,12 +379,29 @@ export default function InvoicesView({ events = [], businessProfile = {
                   <span className="font-bold text-slate-700 block mb-1">Terms & Conditions:</span>
                   <p className="text-slate-600 whitespace-pre-line text-[11px]">{businessProfile.terms}</p>
                 </div>
-                <div className="text-right flex flex-col items-start sm:items-end">
-                  <span className="font-bold text-slate-700 mb-1">Scan & Pay via UPI</span>
-                  <div className="w-24 h-24 bg-slate-100 border border-slate-300 rounded-xl flex items-center justify-center text-[10px] text-slate-500 font-medium">
-                    [ UPI QR CODE ]
-                  </div>
-                  <span className="text-[11px] text-slate-600 mt-1">UPI ID: {businessProfile.upiId}</span>
+                <div className="flex flex-col gap-4 sm:flex-row sm:justify-end">
+                  {businessProfile.upiId?.trim() && (
+                    <div className="flex flex-col items-start">
+                      <span className="font-bold text-slate-700 mb-1">Scan & Pay via UPI</span>
+                      <div className="p-2 bg-white border border-slate-300 rounded-xl print:border-slate-400">
+                        <QRCodeSVG value={getUpiPaymentLink(activeInvoice)} size={128} level="M" includeMargin />
+                      </div>
+                      <span className="text-[11px] text-slate-600 mt-1">UPI ID: {businessProfile.upiId}</span>
+                      <span className="text-[11px] text-slate-600">Amount: ₹ {getBalanceDue(activeInvoice).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    </div>
+                  )}
+                  {(businessProfile.bankAccountName || businessProfile.bankName || businessProfile.bankAccountNumber || businessProfile.bankIfsc || businessProfile.bankBranch) && (
+                    <div className="min-w-40 text-left sm:text-right">
+                      <span className="font-bold text-slate-700 block mb-1">Bank Transfer</span>
+                      <div className="space-y-0.5 text-[11px] text-slate-600">
+                        {businessProfile.bankAccountName && <div><span className="font-semibold">Account name:</span> {businessProfile.bankAccountName}</div>}
+                        {businessProfile.bankName && <div><span className="font-semibold">Bank:</span> {businessProfile.bankName}</div>}
+                        {businessProfile.bankAccountNumber && <div><span className="font-semibold">Account no.:</span> {businessProfile.bankAccountNumber}</div>}
+                        {businessProfile.bankIfsc && <div><span className="font-semibold">IFSC:</span> {businessProfile.bankIfsc}</div>}
+                        {businessProfile.bankBranch && <div><span className="font-semibold">Branch:</span> {businessProfile.bankBranch}</div>}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 

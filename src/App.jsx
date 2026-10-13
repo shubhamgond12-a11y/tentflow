@@ -36,8 +36,31 @@ function TentFlowApp() {
     gstin: "09AABCU9603R1ZM",
     defaultGstRate: 18,
     upiId: "swamitent@upi",
+    bankName: "",
+    bankAccountName: "",
+    bankAccountNumber: "",
+    bankIfsc: "",
+    bankBranch: "",
     terms: "1. Advance payment is non-refundable.\n2. Any damages to inventory at venue will be charged."
   });
+
+  useEffect(() => {
+    try {
+      const savedProfile = localStorage.getItem('tentflow-business-profile');
+      if (savedProfile) {
+        const parsedProfile = JSON.parse(savedProfile);
+        if (parsedProfile && typeof parsedProfile === 'object') {
+          setBusinessProfile(current => ({ ...current, ...parsedProfile }));
+        }
+      }
+    } catch {
+      localStorage.removeItem('tentflow-business-profile');
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('tentflow-business-profile', JSON.stringify(businessProfile));
+  }, [businessProfile]);
 
   // Equipment & Inventory State
   const [inventory, setInventory] = useState([

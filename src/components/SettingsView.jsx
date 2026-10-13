@@ -18,6 +18,11 @@ export default function SettingsView({ initialSettings, onSaveSettings, strings 
     gstin: "09AABCU9603R1ZM",
     defaultGstRate: 18,
     upiId: "swamitent@upi",
+    bankName: "",
+    bankAccountName: "",
+    bankAccountNumber: "",
+    bankIfsc: "",
+    bankBranch: "",
     terms: "1. Advance payment is non-refundable.\n2. Any damages to inventory at venue will be charged."
   });
 
@@ -173,6 +178,27 @@ export default function SettingsView({ initialSettings, onSaveSettings, strings 
               className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-sm focus:outline-none focus:border-[#642FCD]"
               placeholder="e.g. swamitent@upi"
             />
+          </div>
+
+          <div className="space-y-3 border-t border-slate-100 dark:border-[#642FCD]/20 pt-4">
+            <h5 className="text-sm font-semibold text-slate-800 dark:text-[#FFFFFF]">Bank Transfer Details (Printed on Invoices)</h5>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7]">Account holder name
+                <input type="text" value={profile.bankAccountName || ''} onChange={e => setProfile({ ...profile, bankAccountName: e.target.value })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD]" placeholder="Name on bank account" />
+              </label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7]">Bank name
+                <input type="text" value={profile.bankName || ''} onChange={e => setProfile({ ...profile, bankName: e.target.value })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD]" placeholder="Bank name" />
+              </label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7]">Account number
+                <input type="text" inputMode="numeric" value={profile.bankAccountNumber || ''} onChange={e => setProfile({ ...profile, bankAccountNumber: e.target.value })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD]" placeholder="Bank account number" />
+              </label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7]">IFSC code
+                <input type="text" value={profile.bankIfsc || ''} onChange={e => setProfile({ ...profile, bankIfsc: e.target.value.toUpperCase() })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD] uppercase" placeholder="e.g. SBIN0001234" />
+              </label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7] sm:col-span-2">Branch (optional)
+                <input type="text" value={profile.bankBranch || ''} onChange={e => setProfile({ ...profile, bankBranch: e.target.value })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD]" placeholder="Branch name" />
+              </label>
+            </div>
           </div>
 
           <div>
