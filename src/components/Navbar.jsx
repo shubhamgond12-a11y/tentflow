@@ -2,6 +2,7 @@ import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import { Globe, Menu, X, Sun, Moon } from 'lucide-react';
+import { translate as tx } from '../translations';
 
 export default function Navbar({ 
   businessProfile, 
@@ -31,7 +32,7 @@ export default function Navbar({
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="lg:hidden p-2 rounded-xl bg-slate-100 dark:bg-[#642FCD]/20 border border-slate-200 dark:border-[#642FCD]/30 text-[#642FCD] dark:text-[#DCCCF7] hover:bg-slate-200 dark:hover:bg-[#642FCD]/30 transition flex-shrink-0"
-          aria-label="Toggle Navigation Menu"
+          aria-label={tx(strings, 'Toggle Navigation Menu')}
         >
           {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
@@ -58,8 +59,8 @@ export default function Navbar({
         <button 
           onClick={toggleTheme}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-[#642FCD]/20 border border-slate-200 dark:border-[#642FCD]/30 text-[#642FCD] dark:text-[#DCCCF7] hover:bg-slate-200 dark:hover:bg-[#642FCD]/30 transition text-xs sm:text-sm font-semibold shadow-sm"
-          title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-          aria-label="Toggle Theme"
+          title={tx(strings, theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode')}
+          aria-label={tx(strings, 'Toggle Theme')}
         >
           {theme === 'dark' ? (
             <Sun size={16} className="text-[#DCCCF7]" />
@@ -67,7 +68,7 @@ export default function Navbar({
             <Moon size={16} className="text-[#642FCD]" />
           )}
           <span className="hidden sm:inline">
-            {theme === 'dark' ? 'Light' : 'Dark'}
+            {tx(strings, theme === 'dark' ? 'Light' : 'Dark')}
           </span>
         </button>
 
@@ -75,11 +76,11 @@ export default function Navbar({
         <button 
           onClick={toggleLanguage}
           className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#642FCD]/10 dark:bg-[#642FCD]/20 border border-[#642FCD]/30 text-[#642FCD] dark:text-[#DCCCF7] hover:bg-[#642FCD]/20 dark:hover:bg-[#642FCD]/30 transition text-xs sm:text-sm font-semibold shadow-sm"
-          title="Switch Language / भाषा बदलें"
-          aria-label="Switch Language"
+          title={tx(strings, 'Switch Language')}
+          aria-label={tx(strings, 'Switch Language')}
         >
           <Globe size={16} />
-          <span>{lang === 'en' ? 'अ (Hindi)' : 'A (English)'}</span>
+          <span>{lang === 'en' ? 'हिंदी (Hindi)' : 'English (अंग्रेज़ी)'}</span>
         </button>
 
       </div>

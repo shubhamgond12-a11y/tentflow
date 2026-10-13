@@ -9,6 +9,7 @@ import {
   CheckCircle2, 
   Percent 
 } from 'lucide-react';
+import { translate as tx } from '../translations';
 
 export default function SettingsView({ initialSettings, onSaveSettings, strings }) {
   const [profile, setProfile] = useState(initialSettings || {
@@ -44,17 +45,17 @@ export default function SettingsView({ initialSettings, onSaveSettings, strings 
       <div className="p-6 rounded-3xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 backdrop-blur-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#642FCD]/10 dark:bg-[#642FCD]/20 text-[#642FCD] dark:text-[#DCCCF7] text-xs font-semibold border border-[#642FCD]/30 mb-2">
-            <Building2 size={14} /> System Configuration
+            <Building2 size={14} /> {tx(strings, 'System Configuration')}
           </div>
-          <h3 className="text-xl font-bold text-slate-900 dark:text-[#FFFFFF]">Business Profile & Branding Settings</h3>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-[#FFFFFF]">{tx(strings, 'Business Profile & Branding Settings')}</h3>
           <p className="text-sm text-slate-500 dark:text-[#DCCCF7]/80 mt-1">
-            Update your business name, address, GSTIN, and payment terms. Changing the business name automatically updates application branding and logo avatar.
+            {tx(strings, 'Update your business name, address, GSTIN, and payment terms. Changing the business name automatically updates application branding and logo avatar.')}
           </p>
         </div>
 
         {isSavedSuccess && (
           <div className="px-4 py-2 rounded-2xl bg-[#642FCD]/10 dark:bg-[#642FCD]/30 border border-[#642FCD] text-[#642FCD] dark:text-[#DCCCF7] text-xs font-semibold flex items-center gap-2 shadow-lg animate-fadeIn">
-            <CheckCircle2 size={16} /> Changes Saved Successfully!
+            <CheckCircle2 size={16} /> {tx(strings, 'Changes Saved Successfully!')}
           </div>
         )}
       </div>
@@ -65,13 +66,13 @@ export default function SettingsView({ initialSettings, onSaveSettings, strings 
         {/* Core Identity & Contact */}
         <div className="p-6 rounded-3xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 backdrop-blur-xl shadow-xl space-y-4">
           <h4 className="font-bold text-base text-slate-900 dark:text-[#FFFFFF] border-b border-slate-100 dark:border-[#642FCD]/20 pb-3 flex items-center gap-2">
-            <Building2 size={18} className="text-[#642FCD]" /> Business Identity & Contact Information
+            <Building2 size={18} className="text-[#642FCD]" /> {tx(strings, 'Business Identity & Contact Information')}
           </h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7] mb-1.5">
-                Business Name (Updates App Logo & Title) *
+                {tx(strings, 'Business Name (Updates App Logo & Title) *')}
               </label>
               <input 
                 type="text" 
@@ -79,13 +80,13 @@ export default function SettingsView({ initialSettings, onSaveSettings, strings 
                 value={profile.name}
                 onChange={(e) => setProfile({ ...profile, name: e.target.value })}
                 className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-sm focus:outline-none focus:border-[#642FCD]"
-                placeholder="e.g. swami tent house"
+                placeholder={tx(strings, 'e.g. swami tent house')}
               />
             </div>
 
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7] mb-1.5">
-                Official Phone / Mobile Number *
+                {tx(strings, 'Official Phone / Mobile Number *')}
               </label>
               <div className="relative">
                 <Phone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#DCCCF7]/60" />
@@ -95,7 +96,7 @@ export default function SettingsView({ initialSettings, onSaveSettings, strings 
                   value={profile.phone}
                   onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-sm focus:outline-none focus:border-[#642FCD]"
-                  placeholder="+91 9876543210"
+                  placeholder={tx(strings, '+91 9876543210')}
                 />
               </div>
             </div>
@@ -103,7 +104,7 @@ export default function SettingsView({ initialSettings, onSaveSettings, strings 
 
           <div>
             <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7] mb-1.5">
-              Godown / Office Street Address *
+              {tx(strings, 'Godown / Office Street Address *')}
             </label>
             <div className="relative">
               <MapPin size={16} className="absolute left-3.5 top-3 text-slate-400 dark:text-[#DCCCF7]/60" />
@@ -113,7 +114,7 @@ export default function SettingsView({ initialSettings, onSaveSettings, strings 
                 value={profile.address}
                 onChange={(e) => setProfile({ ...profile, address: e.target.value })}
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-sm focus:outline-none focus:border-[#642FCD]"
-                placeholder="Full address for tax invoices"
+                  placeholder={tx(strings, 'Full address for tax invoices')}
               ></textarea>
             </div>
           </div>
@@ -122,13 +123,13 @@ export default function SettingsView({ initialSettings, onSaveSettings, strings 
         {/* GST & Taxation */}
         <div className="p-6 rounded-3xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 backdrop-blur-xl shadow-xl space-y-4">
           <h4 className="font-bold text-base text-slate-900 dark:text-[#FFFFFF] border-b border-slate-100 dark:border-[#642FCD]/20 pb-3 flex items-center gap-2">
-            <FileText size={18} className="text-[#642FCD]" /> GST Taxation Details
+            <FileText size={18} className="text-[#642FCD]" /> {tx(strings, 'GST Taxation Details')}
           </h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7] mb-1.5">
-                Business GSTIN Number *
+                {tx(strings, 'Business GSTIN Number *')}
               </label>
               <input 
                 type="text" 
@@ -136,13 +137,13 @@ export default function SettingsView({ initialSettings, onSaveSettings, strings 
                 value={profile.gstin}
                 onChange={(e) => setProfile({ ...profile, gstin: e.target.value })}
                 className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-sm focus:outline-none focus:border-[#642FCD] uppercase font-mono"
-                placeholder="09AABCU9603R1ZM"
+                placeholder={tx(strings, '09AABCU9603R1ZM')}
               />
             </div>
 
             <div>
               <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7] mb-1.5">
-                Default GST Tax Rate (%) *
+                {tx(strings, 'Default GST Tax Rate (%) *')}
               </label>
               <div className="relative">
                 <Percent size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#DCCCF7]/60" />
@@ -154,7 +155,7 @@ export default function SettingsView({ initialSettings, onSaveSettings, strings 
                   value={profile.defaultGstRate}
                   onChange={(e) => setProfile({ ...profile, defaultGstRate: Number(e.target.value) })}
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-sm focus:outline-none focus:border-[#642FCD]"
-                  placeholder="18"
+                  placeholder={tx(strings, '18')}
                 />
               </div>
             </div>
@@ -164,46 +165,46 @@ export default function SettingsView({ initialSettings, onSaveSettings, strings 
         {/* Payment UPI & Invoice Terms */}
         <div className="p-6 rounded-3xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 backdrop-blur-xl shadow-xl space-y-4">
           <h4 className="font-bold text-base text-slate-900 dark:text-[#FFFFFF] border-b border-slate-100 dark:border-[#642FCD]/20 pb-3 flex items-center gap-2">
-            <QrCode size={18} className="text-[#642FCD]" /> Payments & Invoice Terms
+            <QrCode size={18} className="text-[#642FCD]" /> {tx(strings, 'Payments & Invoice Terms')}
           </h4>
 
           <div>
             <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7] mb-1.5">
-              Official UPI VPA ID (For Printing QR Code on Bills)
+              {tx(strings, 'Official UPI VPA ID (For Printing QR Code on Bills)')}
             </label>
             <input 
               type="text" 
               value={profile.upiId}
               onChange={(e) => setProfile({ ...profile, upiId: e.target.value })}
               className="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-sm focus:outline-none focus:border-[#642FCD]"
-              placeholder="e.g. swamitent@upi"
+              placeholder={tx(strings, 'e.g. swamitent@upi')}
             />
           </div>
 
           <div className="space-y-3 border-t border-slate-100 dark:border-[#642FCD]/20 pt-4">
-            <h5 className="text-sm font-semibold text-slate-800 dark:text-[#FFFFFF]">Bank Transfer Details (Printed on Invoices)</h5>
+            <h5 className="text-sm font-semibold text-slate-800 dark:text-[#FFFFFF]">{tx(strings, 'Bank Transfer Details (Printed on Invoices)')}</h5>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7]">Account holder name
-                <input type="text" value={profile.bankAccountName || ''} onChange={e => setProfile({ ...profile, bankAccountName: e.target.value })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD]" placeholder="Name on bank account" />
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7]">{tx(strings, 'Account holder name')}
+                <input type="text" value={profile.bankAccountName || ''} onChange={e => setProfile({ ...profile, bankAccountName: e.target.value })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD]" placeholder={tx(strings, 'Name on bank account')} />
               </label>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7]">Bank name
-                <input type="text" value={profile.bankName || ''} onChange={e => setProfile({ ...profile, bankName: e.target.value })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD]" placeholder="Bank name" />
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7]">{tx(strings, 'Bank name')}
+                <input type="text" value={profile.bankName || ''} onChange={e => setProfile({ ...profile, bankName: e.target.value })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD]" placeholder={tx(strings, 'Bank name')} />
               </label>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7]">Account number
-                <input type="text" inputMode="numeric" value={profile.bankAccountNumber || ''} onChange={e => setProfile({ ...profile, bankAccountNumber: e.target.value })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD]" placeholder="Bank account number" />
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7]">{tx(strings, 'Account number')}
+                <input type="text" inputMode="numeric" value={profile.bankAccountNumber || ''} onChange={e => setProfile({ ...profile, bankAccountNumber: e.target.value })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD]" placeholder={tx(strings, 'Bank account number')} />
               </label>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7]">IFSC code
-                <input type="text" value={profile.bankIfsc || ''} onChange={e => setProfile({ ...profile, bankIfsc: e.target.value.toUpperCase() })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD] uppercase" placeholder="e.g. SBIN0001234" />
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7]">{tx(strings, 'IFSC code')}
+                <input type="text" value={profile.bankIfsc || ''} onChange={e => setProfile({ ...profile, bankIfsc: e.target.value.toUpperCase() })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD] uppercase" placeholder={tx(strings, 'e.g. SBIN0001234')} />
               </label>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7] sm:col-span-2">Branch (optional)
-                <input type="text" value={profile.bankBranch || ''} onChange={e => setProfile({ ...profile, bankBranch: e.target.value })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD]" placeholder="Branch name" />
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7] sm:col-span-2">{tx(strings, 'Branch (optional)')}
+                <input type="text" value={profile.bankBranch || ''} onChange={e => setProfile({ ...profile, bankBranch: e.target.value })} className="mt-1 w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-black border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-[#642FCD]" placeholder={tx(strings, 'Branch name')} />
               </label>
             </div>
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-slate-700 dark:text-[#DCCCF7] mb-1.5">
-              Default Terms & Conditions (Appears on Tax Invoices)
+              {tx(strings, 'Default Terms & Conditions (Appears on Tax Invoices)')}
             </label>
             <textarea 
               rows="3"
@@ -220,7 +221,7 @@ export default function SettingsView({ initialSettings, onSaveSettings, strings 
             type="submit"
             className="px-8 py-3 rounded-2xl bg-[#642FCD] text-[#FFFFFF] font-bold text-sm hover:bg-[#642FCD]/80 transition shadow-xl shadow-[#642FCD]/20 flex items-center gap-2 border border-[#642FCD]"
           >
-            <Save size={18} /> Save Settings & Apply Branding
+            <Save size={18} /> {tx(strings, 'Save Settings & Apply Branding')}
           </button>
         </div>
 

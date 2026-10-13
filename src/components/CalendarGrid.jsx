@@ -9,8 +9,11 @@ import {
   CheckCircle2, 
   IndianRupee 
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
+import { translate as tx } from '../translations';
 
 export default function CalendarGrid({ events = [], onOpenBookingModal, strings }) {
+  const { lang } = useLanguage();
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const year = currentDate.getFullYear();
@@ -30,12 +33,14 @@ export default function CalendarGrid({ events = [], onOpenBookingModal, strings 
   };
 
   // Month & Day calculations
-  const monthNames = [
+  const englishMonths = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
+  const hindiMonths = ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
+  const monthNames = lang === 'hi' ? hindiMonths : englishMonths;
 
-  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const daysOfWeek = lang === 'hi' ? ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरु', 'शुक्र', 'शनि'] : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   const firstDayOfMonth = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -71,13 +76,13 @@ export default function CalendarGrid({ events = [], onOpenBookingModal, strings 
       <div className="p-6 rounded-3xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 backdrop-blur-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#642FCD]/10 dark:bg-[#642FCD]/20 text-[#642FCD] dark:text-[#DCCCF7] text-xs font-semibold border border-[#642FCD]/30 mb-2">
-            <CalendarIcon size={14} /> Event Schedule Grid
+            <CalendarIcon size={14} /> {tx(strings, 'Event Schedule Grid')}
           </div>
           <h3 className="text-xl font-bold text-slate-900 dark:text-[#FFFFFF]">
             {monthNames[month]} {year}
           </h3>
           <p className="text-sm text-slate-500 dark:text-[#DCCCF7]/80 mt-1">
-            Click on any date to schedule a new function or inspect active tent house bookings.
+            {tx(strings, 'Click on any date to schedule a new function or inspect active tent house bookings.')}
           </p>
         </div>
 
@@ -86,7 +91,7 @@ export default function CalendarGrid({ events = [], onOpenBookingModal, strings 
             <button 
               onClick={handlePrevMonth}
               className="p-2 rounded-xl text-slate-600 dark:text-[#DCCCF7] hover:bg-slate-200 dark:hover:bg-[#642FCD]/30 transition"
-              title="Previous Month"
+              title={tx(strings, 'Previous Month')}
             >
               <ChevronLeft size={18} />
             </button>
@@ -94,12 +99,12 @@ export default function CalendarGrid({ events = [], onOpenBookingModal, strings 
               onClick={handleToday}
               className="px-3 py-1.5 rounded-xl text-xs font-bold text-[#642FCD] dark:text-[#DCCCF7] hover:bg-slate-200 dark:hover:bg-[#642FCD]/30 transition"
             >
-              Today
+              {tx(strings, 'Today')}
             </button>
             <button 
               onClick={handleNextMonth}
               className="p-2 rounded-xl text-slate-600 dark:text-[#DCCCF7] hover:bg-slate-200 dark:hover:bg-[#642FCD]/30 transition"
-              title="Next Month"
+              title={tx(strings, 'Next Month')}
             >
               <ChevronRight size={18} />
             </button>
@@ -109,7 +114,7 @@ export default function CalendarGrid({ events = [], onOpenBookingModal, strings 
             onClick={() => onOpenBookingModal(new Date().toISOString().split('T')[0])}
             className="px-4 py-2.5 rounded-2xl bg-[#642FCD] text-[#FFFFFF] text-xs font-bold hover:bg-[#642FCD]/80 transition shadow-lg shadow-[#642FCD]/20 flex items-center gap-1.5 border border-[#642FCD]"
           >
-            <Plus size={16} /> New Booking
+            <Plus size={16} /> {tx(strings, 'New Booking')}
           </button>
         </div>
       </div>
@@ -152,7 +157,7 @@ export default function CalendarGrid({ events = [], onOpenBookingModal, strings 
                   </span>
 
                   <span className="opacity-0 group-hover:opacity-100 text-[10px] font-semibold text-[#642FCD] dark:text-[#DCCCF7] transition flex items-center gap-0.5">
-                    <Plus size={12} /> Add
+                    <Plus size={12} /> {tx(strings, 'Add')}
                   </span>
                 </div>
 
@@ -182,7 +187,7 @@ export default function CalendarGrid({ events = [], onOpenBookingModal, strings 
                 {hasEvents && (
                   <div className="flex items-center gap-1 text-[10px] font-semibold text-[#642FCD] dark:text-[#DCCCF7]">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#642FCD] animate-pulse"></span>
-                    <span>{cell.dayEvents.length} Event{cell.dayEvents.length > 1 ? 's' : ''}</span>
+                    <span>{cell.dayEvents.length} {tx(strings, cell.dayEvents.length > 1 ? 'Events' : 'Event')}</span>
                   </div>
                 )}
               </div>

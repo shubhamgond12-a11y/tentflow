@@ -9,6 +9,7 @@ import InventoryView from './components/InventoryView';
 import StaffView from './components/StaffView';
 import InvoicesView from './components/InvoicesView';
 import SettingsView from './components/SettingsView';
+import { translate as tx } from './translations';
 
 import { 
   LayoutDashboard, 
@@ -200,10 +201,10 @@ function TentFlowApp() {
 
           {/* Quick Business Status Tag */}
           <div className="p-4 rounded-2xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#8D2E6E]/30 mt-4 flex-shrink-0 shadow-sm">
-            <div className="text-xs text-slate-500 dark:text-[#DCCCF7]/80">System Status</div>
+            <div className="text-xs text-slate-500 dark:text-[#DCCCF7]/80">{tx(strings, 'System Status')}</div>
             <div className="font-semibold text-[#642FCD] dark:text-[#DCCCF7] mt-0.5 flex items-center gap-1.5 text-xs">
               <span className="w-2 h-2 rounded-full bg-[#642FCD] animate-pulse"></span>
-              Live Operations Sync
+              {tx(strings, 'Live Operations Sync')}
             </div>
           </div>
         </aside>

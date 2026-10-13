@@ -1,10 +1,25 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { t } from '../translations';
 
 const LanguageContext = createContext();
 
 export function LanguageProvider({ children }) {
-  const [lang, setLang] = useState('en'); // 'en' (English) or 'hi' (Hindi)
+  const [lang, setLang] = useState(() => {
+    try {
+      return localStorage.getItem('tentflow-language') === 'hi' ? 'hi' : 'en';
+    } catch {
+      return 'en';
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('tentflow-language', lang);
+    } catch {
+      // Language still works for this session when storage is unavailable.
+    }
+    document.documentElement.lang = lang;
+  }, [lang]);
   
   // Retrieve dictionary based on active language, falling back to English
   const strings = t[lang] || t.en;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FileText, Printer, Search, ShieldCheck, DollarSign, ArrowUpRight, X, Building2, CheckCircle2 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
+import { translate as tx } from '../translations';
 
 export default function InvoicesView({ events = [], businessProfile = {
   name: "swami tent house",
@@ -119,37 +120,37 @@ export default function InvoicesView({ events = [], businessProfile = {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#642FCD]/10 dark:bg-[#642FCD]/20 text-[#642FCD] dark:text-[#DCCCF7] text-xs font-semibold border border-[#642FCD]/30 mb-2">
             <FileText size={14} /> GST Tax Compliance & Billing
           </div>
-          <h3 className="text-xl font-bold text-slate-900 dark:text-[#FFFFFF]">GST Invoices & Reports</h3>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-[#FFFFFF]">{tx(strings, 'GST Invoices & Reports')}</h3>
           <p className="text-sm text-slate-500 dark:text-[#DCCCF7]/80 mt-1">
-            Manage B2B and B2C tax invoices, compute CGST/SGST liability, and print GST tax invoices.
+            {tx(strings, 'Manage B2B and B2C tax invoices, compute CGST/SGST liability, and print GST tax invoices.')}
           </p>
         </div>
         <div className="px-4 py-2.5 rounded-2xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 text-xs text-slate-700 dark:text-[#DCCCF7]">
-          <span className="text-[#642FCD] dark:text-[#DCCCF7] font-bold">Business GSTIN:</span> {businessProfile.gstin} 
+          <span className="text-[#642FCD] dark:text-[#DCCCF7] font-bold">{tx(strings, 'Business GSTIN:')}</span> {businessProfile.gstin}
         </div>
       </div>
 
       {/* GST Summary & Tax Liability Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="p-5 rounded-3xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 backdrop-blur-xl shadow-lg">
-          <div className="text-xs text-slate-500 dark:text-[#DCCCF7]/80 mb-1">Total Taxable Value</div>
+          <div className="text-xs text-slate-500 dark:text-[#DCCCF7]/80 mb-1">{tx(strings, 'Total Taxable Value')}</div>
           <div className="text-2xl font-extrabold text-slate-900 dark:text-[#FFFFFF]">₹ {totalTaxableValue.toLocaleString('en-IN')}</div>
-          <div className="text-xs text-[#642FCD] dark:text-[#DCCCF7] mt-2 font-medium">For current billing period</div>
+          <div className="text-xs text-[#642FCD] dark:text-[#DCCCF7] mt-2 font-medium">{tx(strings, 'For current billing period')}</div>
         </div>
         <div className="p-5 rounded-3xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 backdrop-blur-xl shadow-lg">
-          <div className="text-xs text-slate-500 dark:text-[#DCCCF7]/80 mb-1">Total GST Tax Collected</div>
+          <div className="text-xs text-slate-500 dark:text-[#DCCCF7]/80 mb-1">{tx(strings, 'Total GST Tax Collected')}</div>
           <div className="text-2xl font-extrabold text-[#642FCD] dark:text-[#DCCCF7]">₹ {totalTaxCollected.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</div>
-          <div className="text-xs text-slate-500 dark:text-[#DCCCF7]/80 mt-2">CGST + SGST split</div>
+          <div className="text-xs text-slate-500 dark:text-[#DCCCF7]/80 mt-2">{tx(strings, 'CGST + SGST split')}</div>
         </div>
         <div className="p-5 rounded-3xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 backdrop-blur-xl shadow-lg">
-          <div className="text-xs text-slate-500 dark:text-[#DCCCF7]/80 mb-1">B2B Invoices (With GSTIN)</div>
+          <div className="text-xs text-slate-500 dark:text-[#DCCCF7]/80 mb-1">{tx(strings, 'B2B Invoices (With GSTIN)')}</div>
           <div className="text-2xl font-extrabold text-slate-900 dark:text-[#FFFFFF]">{totalB2B} Invoices</div>
-          <div className="text-xs text-blue-500 dark:text-blue-400 mt-2">Eligible for input tax credit</div>
+          <div className="text-xs text-blue-500 dark:text-blue-400 mt-2">{tx(strings, 'Eligible for input tax credit')}</div>
         </div>
         <div className="p-5 rounded-3xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 backdrop-blur-xl shadow-lg">
-          <div className="text-xs text-slate-500 dark:text-[#DCCCF7]/80 mb-1">B2C Invoices (Consumer)</div>
+          <div className="text-xs text-slate-500 dark:text-[#DCCCF7]/80 mb-1">{tx(strings, 'B2C Invoices (Consumer)')}</div>
           <div className="text-2xl font-extrabold text-slate-900 dark:text-[#FFFFFF]">{totalB2C} Invoices</div>
-          <div className="text-xs text-purple-500 dark:text-purple-400 mt-2">Standard consumer billing</div>
+          <div className="text-xs text-purple-500 dark:text-purple-400 mt-2">{tx(strings, 'Standard consumer billing')}</div>
         </div>
       </div>
 
@@ -157,9 +158,9 @@ export default function InvoicesView({ events = [], businessProfile = {
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2 w-full sm:w-auto">
           {[
-            { id: 'all', label: 'All Invoices' },
-            { id: 'b2b', label: 'B2B (GSTIN)' },
-            { id: 'b2c', label: 'B2C (Consumer)' }
+            { id: 'all', label: tx(strings, 'All Invoices') },
+            { id: 'b2b', label: tx(strings, 'B2B (GSTIN)') },
+            { id: 'b2c', label: tx(strings, 'B2C (Consumer)') }
           ].map(tab => (
             <button
               key={tab.id}
@@ -179,7 +180,7 @@ export default function InvoicesView({ events = [], businessProfile = {
           <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#DCCCF7]/60" />
           <input 
             type="text"
-            placeholder="Search customer or event..."
+            placeholder={tx(strings, 'Search customer or event...')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-2 rounded-xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 text-slate-900 dark:text-[#FFFFFF] text-xs focus:outline-none focus:border-[#642FCD]"
@@ -193,12 +194,12 @@ export default function InvoicesView({ events = [], businessProfile = {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200 dark:border-[#642FCD]/30 bg-slate-100/60 dark:bg-[#000000] text-xs font-semibold text-slate-500 dark:text-[#DCCCF7] uppercase tracking-wider">
-                <th className="p-4 pl-6">Invoice / Event</th>
-                <th className="p-4">Customer</th>
-                <th className="p-4">GSTIN Status</th>
-                <th className="p-4 text-right">Taxable Value</th>
+                <th className="p-4 pl-6">{tx(strings, 'Invoice / Event')}</th>
+                <th className="p-4">{tx(strings, 'Customer')}</th>
+                <th className="p-4">{tx(strings, 'GSTIN Status')}</th>
+                <th className="p-4 text-right">{tx(strings, 'Taxable Value')}</th>
                 <th className="p-4 text-right">GST ({businessProfile.defaultGstRate}%)</th>
-                <th className="p-4 text-right pr-6">Actions</th>
+                <th className="p-4 text-right pr-6">{tx(strings, 'Actions')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-[#642FCD]/20 text-sm">
@@ -224,7 +225,7 @@ export default function InvoicesView({ events = [], businessProfile = {
                         </span>
                       ) : (
                         <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-purple-500/10 text-purple-600 dark:bg-[#8D2E6E]/20 dark:text-[#DCCCF7] border border-purple-500/20 dark:border-[#8D2E6E]/40">
-                          B2C Consumer
+                          {tx(strings, 'B2C Consumer')}
                         </span>
                       )}
                     </td>
@@ -235,7 +236,7 @@ export default function InvoicesView({ events = [], businessProfile = {
                         onClick={() => setActiveInvoice(inv)}
                         className="px-3 py-1.5 rounded-xl bg-[#642FCD]/10 dark:bg-[#642FCD]/20 text-[#642FCD] dark:text-[#DCCCF7] border border-[#642FCD]/30 text-xs font-semibold hover:bg-[#642FCD]/20 dark:hover:bg-[#642FCD]/30 transition flex items-center gap-1 ml-auto"
                       >
-                        <FileText size={14} /> View GST Bill
+                        <FileText size={14} /> {tx(strings, 'View GST Bill')}
                       </button>
                     </td>
                   </tr>
@@ -257,14 +258,14 @@ export default function InvoicesView({ events = [], businessProfile = {
                 <div className="p-2 rounded-xl bg-[#642FCD]/10 dark:bg-[#642FCD]/20 text-[#642FCD] dark:text-[#DCCCF7]">
                   <Printer size={18} />
                 </div>
-                <h4 className="font-bold text-base text-slate-900 dark:text-[#FFFFFF]">GST Tax Invoice Preview</h4>
+                <h4 className="font-bold text-base text-slate-900 dark:text-[#FFFFFF]">{tx(strings, 'GST Tax Invoice Preview')}</h4>
               </div>
               <div className="flex items-center gap-3">
                 <button 
                   onClick={handlePrint}
                   className="px-4 py-2 rounded-xl bg-[#642FCD] text-white font-semibold text-xs hover:bg-[#642FCD]/80 transition flex items-center gap-1.5 shadow-lg shadow-[#642FCD]/30 border border-[#642FCD]"
                 >
-                  <Printer size={14} /> Print / Export PDF 
+                  <Printer size={14} /> {tx(strings, 'Print / Export PDF')}
                 </button>
                 <button 
                   onClick={() => setActiveInvoice(null)}
@@ -284,28 +285,28 @@ export default function InvoicesView({ events = [], businessProfile = {
                 <div>
                   <h1 className="text-2xl font-black uppercase tracking-tight text-slate-900">{businessProfile.name}</h1>
                   <p className="text-xs text-slate-600 mt-1">{businessProfile.address}</p>
-                  <p className="text-xs text-slate-600">Phone: {businessProfile.phone}</p>
-                  <p className="text-xs font-bold text-slate-900 mt-1">GSTIN: {businessProfile.gstin}</p>
+                  <p className="text-xs text-slate-600">{tx(strings, 'Phone:')} {businessProfile.phone}</p>
+                  <p className="text-xs font-bold text-slate-900 mt-1">{tx(strings, 'GSTIN:')} {businessProfile.gstin}</p>
                 </div>
                 <div className="text-right">
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-900 text-white">TAX INVOICE</span>
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-900 text-white">{tx(strings, 'TAX INVOICE')}</span>
                   <div className="text-xs text-slate-600 mt-2">Date: {activeInvoice.date}</div>
-                  <div className="text-xs font-semibold text-slate-800">Event: {activeInvoice.name}</div>
+                  <div className="text-xs font-semibold text-slate-800">{tx(strings, 'Event:')} {activeInvoice.name}</div>
                 </div>
               </div>
 
               {/* Customer Bill To */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs">
                 <div>
-                  <span className="font-bold text-slate-700 block mb-1">Billed To:</span>
+                  <span className="font-bold text-slate-700 block mb-1">{tx(strings, 'Billed To:')}</span>
                   <div className="font-bold text-slate-900 text-sm">{activeInvoice.customer?.name}</div>
                   <div>{activeInvoice.customer?.address}</div>
-                  <div>Phone: {activeInvoice.customer?.phone}</div>
+                  <div>{tx(strings, 'Phone:')} {activeInvoice.customer?.phone}</div>
                 </div>
                 <div>
-                  <span className="font-bold text-slate-700 block mb-1">Event Venue & Details:</span>
+                  <span className="font-bold text-slate-700 block mb-1">{tx(strings, 'Event Venue & Details:')}</span>
                   <div>Venue: {activeInvoice.venue}</div>
-                  <div className="mt-1"><span className="font-semibold">Customer GSTIN:</span> {activeInvoice.customer?.gstin || 'N/A (B2C Consumer)'}</div>
+                  <div className="mt-1"><span className="font-semibold">{tx(strings, 'Customer GSTIN:')}</span> {activeInvoice.customer?.gstin || tx(strings, 'N/A (B2C Consumer)')}</div>
                 </div>
               </div>
 
@@ -314,11 +315,11 @@ export default function InvoicesView({ events = [], businessProfile = {
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
                     <tr className="border-b border-slate-300 text-slate-700 bg-slate-100">
-                      <th className="p-3">Item Description</th>
-                      <th className="p-3 text-right">Qty</th>
-                      <th className="p-3 text-right">Days</th>
-                      <th className="p-3 text-right">Rate (₹)</th>
-                      <th className="p-3 text-right">Amount (₹)</th>
+                      <th className="p-3">{tx(strings, 'Item Description')}</th>
+                      <th className="p-3 text-right">{tx(strings, 'Qty')}</th>
+                      <th className="p-3 text-right">{tx(strings, 'Days')}</th>
+                      <th className="p-3 text-right">{tx(strings, 'Rate (₹)')}</th>
+                      <th className="p-3 text-right">{tx(strings, 'Amount (₹)')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200">
@@ -339,15 +340,15 @@ export default function InvoicesView({ events = [], businessProfile = {
               <div className="flex justify-end pt-4 border-t border-slate-200">
                 <div className="w-72 space-y-1.5 text-xs">
                   <div className="flex justify-between text-slate-600">
-                    <span>Subtotal</span>
+                    <span>{tx(strings, 'Subtotal')}</span>
                     <span>₹ {(activeInvoice.subtotal || 0).toLocaleString('en-IN')}</span>
                   </div>
                   <div className="flex justify-between text-slate-600">
-                    <span>Discount</span>
+                    <span>{tx(strings, 'Discount')}</span>
                     <span className="text-rose-600">₹ {(activeInvoice.discount || 0).toLocaleString('en-IN')}</span>
                   </div>
                   <div className="flex justify-between text-slate-600">
-                    <span>Taxable Value</span>
+                    <span>{tx(strings, 'Taxable Value')}</span>
                     <span className="font-semibold">₹ {Math.max(0, (activeInvoice.subtotal || 0) - (activeInvoice.discount || 0)).toLocaleString('en-IN')}</span>
                   </div>
                   {activeInvoice.isGstBill && (
@@ -363,11 +364,11 @@ export default function InvoicesView({ events = [], businessProfile = {
                     </>
                   )}
                   <div className="flex justify-between text-sm font-bold text-slate-900 pt-2 border-t border-slate-300">
-                    <span>Grand Total</span>
+                    <span>{tx(strings, 'Grand Total')}</span>
                     <span>₹ {(Math.max(0, (activeInvoice.subtotal || 0) - (activeInvoice.discount || 0)) * (1 + (activeInvoice.isGstBill ? activeInvoice.gstRate : 0) / 100)).toLocaleString('en-IN', { maximumFractionDigits: 2 })}</span>
                   </div>
                   <div className="flex justify-between text-xs text-amber-600 font-semibold pt-1">
-                    <span>Balance Due</span>
+                    <span>{tx(strings, 'Balance Due')}</span>
                     <span>₹ {(activeInvoice.balanceDue || 0).toLocaleString('en-IN')}</span>
                   </div>
                 </div>
@@ -376,29 +377,29 @@ export default function InvoicesView({ events = [], businessProfile = {
               {/* UPI QR & Terms */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-slate-200 text-xs">
                 <div>
-                  <span className="font-bold text-slate-700 block mb-1">Terms & Conditions:</span>
+                  <span className="font-bold text-slate-700 block mb-1">{tx(strings, 'Terms & Conditions:')}</span>
                   <p className="text-slate-600 whitespace-pre-line text-[11px]">{businessProfile.terms}</p>
                 </div>
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-end">
                   {businessProfile.upiId?.trim() && (
                     <div className="flex flex-col items-start">
-                      <span className="font-bold text-slate-700 mb-1">Scan & Pay via UPI</span>
+                      <span className="font-bold text-slate-700 mb-1">{tx(strings, 'Scan & Pay via UPI')}</span>
                       <div className="p-2 bg-white border border-slate-300 rounded-xl print:border-slate-400">
                         <QRCodeSVG value={getUpiPaymentLink(activeInvoice)} size={128} level="M" includeMargin />
                       </div>
                       <span className="text-[11px] text-slate-600 mt-1">UPI ID: {businessProfile.upiId}</span>
-                      <span className="text-[11px] text-slate-600">Amount: ₹ {getBalanceDue(activeInvoice).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                      <span className="text-[11px] text-slate-600">{tx(strings, 'Amount:')} ₹ {getBalanceDue(activeInvoice).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                     </div>
                   )}
                   {(businessProfile.bankAccountName || businessProfile.bankName || businessProfile.bankAccountNumber || businessProfile.bankIfsc || businessProfile.bankBranch) && (
                     <div className="min-w-40 text-left sm:text-right">
-                      <span className="font-bold text-slate-700 block mb-1">Bank Transfer</span>
+                      <span className="font-bold text-slate-700 block mb-1">{tx(strings, 'Bank Transfer')}</span>
                       <div className="space-y-0.5 text-[11px] text-slate-600">
-                        {businessProfile.bankAccountName && <div><span className="font-semibold">Account name:</span> {businessProfile.bankAccountName}</div>}
-                        {businessProfile.bankName && <div><span className="font-semibold">Bank:</span> {businessProfile.bankName}</div>}
-                        {businessProfile.bankAccountNumber && <div><span className="font-semibold">Account no.:</span> {businessProfile.bankAccountNumber}</div>}
-                        {businessProfile.bankIfsc && <div><span className="font-semibold">IFSC:</span> {businessProfile.bankIfsc}</div>}
-                        {businessProfile.bankBranch && <div><span className="font-semibold">Branch:</span> {businessProfile.bankBranch}</div>}
+                        {businessProfile.bankAccountName && <div><span className="font-semibold">{tx(strings, 'Account name:')}</span> {businessProfile.bankAccountName}</div>}
+                        {businessProfile.bankName && <div><span className="font-semibold">{tx(strings, 'Bank:')}</span> {businessProfile.bankName}</div>}
+                        {businessProfile.bankAccountNumber && <div><span className="font-semibold">{tx(strings, 'Account no.:')}</span> {businessProfile.bankAccountNumber}</div>}
+                        {businessProfile.bankIfsc && <div><span className="font-semibold">{tx(strings, 'IFSC:')}</span> {businessProfile.bankIfsc}</div>}
+                        {businessProfile.bankBranch && <div><span className="font-semibold">{tx(strings, 'Branch:')}</span> {businessProfile.bankBranch}</div>}
                       </div>
                     </div>
                   )}

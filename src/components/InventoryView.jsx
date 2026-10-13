@@ -10,8 +10,9 @@ import {
   X, 
   Save 
 } from 'lucide-react';
+import { translate as tx } from '../translations';
 
-export default function InventoryView({ inventory = [], onAddInventoryItem, onUpdateInventoryItem, events = [] }) {
+export default function InventoryView({ inventory = [], onAddInventoryItem, onUpdateInventoryItem, events = [], strings = {} }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
@@ -85,18 +86,18 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
       <div className="p-6 rounded-3xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 backdrop-blur-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#642FCD]/10 dark:bg-[#642FCD]/20 text-[#642FCD] dark:text-[#DCCCF7] text-xs font-semibold border border-[#642FCD]/30 mb-2">
-            <Boxes size={14} /> Warehouse Stock Management
+            <Boxes size={14} /> {tx(strings, 'Warehouse Stock Management')}
           </div>
-          <h3 className="text-xl font-bold text-slate-900 dark:text-[#FFFFFF]">Inventory & Equipment Stock</h3>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-[#FFFFFF]">{tx(strings, 'Inventory & Equipment Stock')}</h3>
           <p className="text-sm text-slate-500 dark:text-[#DCCCF7]/80 mt-1">
-            Track gear quantities, rental rates, godown storage, and live venue deployment locations.
+            {tx(strings, 'Track gear quantities, rental rates, godown storage, and live venue deployment locations.')}
           </p>
         </div>
         <button 
           onClick={() => setIsAddModalOpen(true)}
           className="px-5 py-2.5 rounded-2xl bg-[#642FCD] text-[#FFFFFF] font-semibold hover:bg-[#642FCD]/80 transition shadow-lg shadow-[#642FCD]/20 flex items-center gap-2 text-sm border border-[#642FCD]"
         >
-          <Plus size={16} /> Add Inventory Item
+          <Plus size={16} /> {tx(strings, 'Add Inventory Item')}
         </button>
       </div>
 
@@ -113,7 +114,7 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
                   : 'bg-slate-50 dark:bg-[#000000] text-slate-600 dark:text-[#DCCCF7]/70 border-slate-200 dark:border-[#642FCD]/20 hover:text-slate-900 dark:hover:text-[#FFFFFF]'
               }`}
             >
-              {cat}
+              {tx(strings, cat)}
             </button>
           ))}
         </div>
@@ -124,17 +125,17 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
             onChange={(e) => setStatusFilter(e.target.value)}
             className="px-3 py-2 rounded-xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 text-xs text-slate-700 dark:text-[#DCCCF7] focus:outline-none focus:border-[#642FCD]"
           >
-            <option value="All" className="bg-white dark:bg-[#000000]">All Locations</option>
-            <option value="godown" className="bg-white dark:bg-[#000000]">In Godown</option>
-            <option value="outside" className="bg-white dark:bg-[#000000]">Outside (At Venue)</option>
-            <option value="repairing" className="bg-white dark:bg-[#000000]">Under Repair</option>
+            <option value="All" className="bg-white dark:bg-[#000000]">{tx(strings, 'All Locations')}</option>
+            <option value="godown" className="bg-white dark:bg-[#000000]">{tx(strings, 'In Godown')}</option>
+            <option value="outside" className="bg-white dark:bg-[#000000]">{tx(strings, 'Outside (At Venue)')}</option>
+            <option value="repairing" className="bg-white dark:bg-[#000000]">{tx(strings, 'Under Repair')}</option>
           </select>
 
           <div className="relative w-full sm:w-60">
             <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-[#DCCCF7]/60" />
             <input 
               type="text"
-              placeholder="Search gear or items..."
+              placeholder={tx(strings, 'Search gear or items...')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 text-slate-900 dark:text-[#FFFFFF] text-xs focus:outline-none focus:border-[#642FCD]"
@@ -169,7 +170,7 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
                     {item.status === 'godown' && <CheckCircle2 size={12} />}
                     {item.status === 'outside' && <MapPin size={12} />}
                     {item.status === 'repairing' && <Wrench size={12} />}
-                    {item.status === 'godown' ? 'In Godown' : item.status === 'outside' ? 'At Venue' : 'Under Repair'}
+                    {tx(strings, item.status === 'godown' ? 'In Godown' : item.status === 'outside' ? 'At Venue' : 'Under Repair')}
                   </span>
                 </div>
 
@@ -179,15 +180,15 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
                 </p>
 
                 <div className="mt-4 p-3 rounded-2xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 flex items-center justify-between text-xs">
-                  <span className="text-slate-500 dark:text-[#DCCCF7]/70">Total Stock Quantity:</span>
-                  <span className="font-bold text-slate-900 dark:text-[#FFFFFF] text-sm">{item.totalQty} Units</span>
+                  <span className="text-slate-500 dark:text-[#DCCCF7]/70">{tx(strings, 'Total Stock Quantity:')}</span>
+                  <span className="font-bold text-slate-900 dark:text-[#FFFFFF] text-sm">{item.totalQty} {tx(strings, 'Units')}</span>
                 </div>
 
                 <div className="mt-3 p-3 rounded-2xl border text-xs flex items-start gap-2.5 bg-slate-50 dark:bg-[#000000] border-slate-200 dark:border-[#642FCD]/30">
                   <MapPin size={16} className="flex-shrink-0 mt-0.5 text-[#642FCD]" />
                   <div>
                     <span className="font-semibold block text-[11px] uppercase tracking-wide text-slate-500 dark:text-[#DCCCF7]">
-                      {item.status === 'outside' ? 'Current Venue Location:' : 'Storage Location:'}
+                      {tx(strings, item.status === 'outside' ? 'Current Venue Location:' : 'Storage Location:')}
                     </span>
                     <span className="font-medium text-xs mt-0.5 block text-slate-900 dark:text-[#FFFFFF]">{locationText}</span>
                   </div>
@@ -199,7 +200,7 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
                   onClick={() => setEditingItem(item)}
                   className="w-full py-2 px-4 rounded-xl bg-[#642FCD]/10 dark:bg-[#642FCD]/20 text-[#642FCD] dark:text-[#DCCCF7] text-xs font-semibold hover:bg-[#642FCD]/20 dark:hover:bg-[#642FCD]/30 transition flex items-center justify-center gap-2 border border-[#642FCD]/30"
                 >
-                  <Edit3 size={14} /> Edit Item Details & Location
+                  <Edit3 size={14} /> {tx(strings, 'Edit Item Details & Location')}
                 </button>
               </div>
             </div>
@@ -213,7 +214,7 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
           <div className="relative w-full max-w-lg bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD] rounded-3xl shadow-2xl p-6 space-y-6 text-slate-900 dark:text-[#FFFFFF]">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-[#642FCD]/30 pb-4">
               <h4 className="font-bold text-lg text-slate-900 dark:text-[#FFFFFF] flex items-center gap-2">
-                <Edit3 size={18} className="text-[#642FCD]" /> Edit Inventory Item
+                <Edit3 size={18} className="text-[#642FCD]" /> {tx(strings, 'Edit Inventory Item')}
               </h4>
               <button onClick={() => setEditingItem(null)} className="p-2 rounded-xl bg-slate-100 dark:bg-[#642FCD]/20 text-slate-500 dark:text-[#DCCCF7] hover:text-slate-900 dark:hover:text-[#FFFFFF]">
                 <X size={18} />
@@ -222,7 +223,7 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
 
             <form onSubmit={handleEditSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Item / Equipment Name *</label>
+                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Item / Equipment Name *')}</label>
                 <input 
                   type="text" 
                   required
@@ -234,7 +235,7 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Category *</label>
+                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Category *')}</label>
                   <select 
                     value={editingItem.category}
                     onChange={(e) => setEditingItem({ ...editingItem, category: e.target.value })}
@@ -246,7 +247,7 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Total Stock Quantity *</label>
+                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Total Stock Quantity *')}</label>
                   <input 
                     type="number" 
                     min="1"
@@ -260,7 +261,7 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Daily Rental Rate (₹) *</label>
+                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Daily Rental Rate (₹) *')}</label>
                   <input 
                     type="number" 
                     min="0"
@@ -271,21 +272,21 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Stock Status *</label>
+                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Stock Status *')}</label>
                   <select 
                     value={editingItem.status}
                     onChange={(e) => setEditingItem({ ...editingItem, status: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-sm focus:outline-none focus:border-[#642FCD]"
                   >
-                    <option value="godown" className="bg-white dark:bg-[#000000]">In Godown</option>
-                    <option value="outside" className="bg-white dark:bg-[#000000]">Outside (At Venue)</option>
-                    <option value="repairing" className="bg-white dark:bg-[#000000]">Under Repair</option>
+                    <option value="godown" className="bg-white dark:bg-[#000000]">{tx(strings, 'In Godown')}</option>
+                    <option value="outside" className="bg-white dark:bg-[#000000]">{tx(strings, 'Outside (At Venue)')}</option>
+                    <option value="repairing" className="bg-white dark:bg-[#000000]">{tx(strings, 'Under Repair')}</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Location / Venue Details</label>
+                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Location / Venue Details')}</label>
                 <input 
                   type="text" 
                   value={editingItem.location || ''}
@@ -300,13 +301,13 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
                   onClick={() => setEditingItem(null)}
                   className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 text-slate-700 dark:text-[#DCCCF7] text-sm font-semibold hover:bg-slate-200 dark:hover:bg-[#642FCD]/20 transition"
                 >
-                  Cancel
+                  {tx(strings, 'Cancel')}
                 </button>
                 <button 
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-[#642FCD] text-[#FFFFFF] text-sm font-semibold hover:bg-[#642FCD]/80 transition flex items-center gap-2 shadow-lg shadow-[#642FCD]/20 border border-[#642FCD]"
                 >
-                  <Save size={16} /> Save Changes
+                  <Save size={16} /> {tx(strings, 'Save Changes')}
                 </button>
               </div>
             </form>
@@ -319,7 +320,7 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-[#000000]/85 backdrop-blur-md">
           <div className="relative w-full max-w-md bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD] rounded-3xl shadow-2xl p-6 space-y-6 text-slate-900 dark:text-[#FFFFFF]">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-[#642FCD]/30 pb-4">
-              <h4 className="font-bold text-lg text-slate-900 dark:text-[#FFFFFF]">Add New Gear / Inventory</h4>
+              <h4 className="font-bold text-lg text-slate-900 dark:text-[#FFFFFF]">{tx(strings, 'Add New Gear / Inventory')}</h4>
               <button onClick={() => setIsAddModalOpen(false)} className="p-2 rounded-xl bg-slate-100 dark:bg-[#642FCD]/20 text-slate-500 dark:text-[#DCCCF7]">
                 <X size={18} />
               </button>
@@ -327,11 +328,11 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
 
             <form onSubmit={handleAddSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Item Name *</label>
+                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Item Name *')}</label>
                 <input 
                   type="text" 
                   required
-                  placeholder="e.g. VIP Banquet Chair"
+                  placeholder={tx(strings, 'e.g. VIP Banquet Chair')}
                   value={newItem.name}
                   onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-sm focus:outline-none focus:border-[#642FCD]"
@@ -340,7 +341,7 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Category *</label>
+                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Category *')}</label>
                   <select 
                     value={newItem.category}
                     onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
@@ -352,7 +353,7 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Quantity *</label>
+                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Quantity *')}</label>
                   <input 
                     type="number" 
                     min="1"
@@ -366,7 +367,7 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Rate (₹) *</label>
+                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Rate (₹) *')}</label>
                   <input 
                     type="number" 
                     min="0"
@@ -377,15 +378,15 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Status *</label>
+                  <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Status *')}</label>
                   <select 
                     value={newItem.status}
                     onChange={(e) => setNewItem({ ...newItem, status: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-sm focus:outline-none focus:border-[#642FCD]"
                   >
-                    <option value="godown" className="bg-white dark:bg-[#000000]">In Godown</option>
-                    <option value="outside" className="bg-white dark:bg-[#000000]">Outside</option>
-                    <option value="repairing" className="bg-white dark:bg-[#000000]">Repair</option>
+                    <option value="godown" className="bg-white dark:bg-[#000000]">{tx(strings, 'In Godown')}</option>
+                    <option value="outside" className="bg-white dark:bg-[#000000]">{tx(strings, 'Outside')}</option>
+                    <option value="repairing" className="bg-white dark:bg-[#000000]">{tx(strings, 'Repair')}</option>
                   </select>
                 </div>
               </div>
@@ -396,13 +397,13 @@ export default function InventoryView({ inventory = [], onAddInventoryItem, onUp
                   onClick={() => setIsAddModalOpen(false)}
                   className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 text-slate-700 dark:text-[#DCCCF7] text-sm font-semibold hover:bg-slate-200 dark:hover:bg-[#642FCD]/20"
                 >
-                  Cancel
+                  {tx(strings, 'Cancel')}
                 </button>
                 <button 
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-[#642FCD] text-[#FFFFFF] text-sm font-semibold hover:bg-[#642FCD]/80 border border-[#642FCD]"
                 >
-                  Save Item
+                  {tx(strings, 'Save Item')}
                 </button>
               </div>
             </form>

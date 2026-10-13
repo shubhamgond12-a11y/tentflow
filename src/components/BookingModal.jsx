@@ -10,6 +10,7 @@ import {
   IndianRupee, 
   Save 
 } from 'lucide-react';
+import { translate as tx } from '../translations';
 
 export default function BookingModal({ 
   isOpen, 
@@ -146,14 +147,14 @@ export default function BookingModal({
               <CalendarIcon size={20} />
             </div>
             <div>
-              <h3 className="font-bold text-lg text-slate-900 dark:text-[#FFFFFF]">Create New Event Booking</h3>
-              <p className="text-xs text-slate-500 dark:text-[#DCCCF7]/80">Reserve gear, generate invoice estimate, and record advance</p>
+              <h3 className="font-bold text-lg text-slate-900 dark:text-[#FFFFFF]">{tx(strings, 'Create New Event Booking')}</h3>
+              <p className="text-xs text-slate-500 dark:text-[#DCCCF7]/80">{tx(strings, 'Reserve gear, generate invoice estimate, and record advance')}</p>
             </div>
           </div>
           <button 
             onClick={onClose}
             className="p-2 rounded-xl bg-slate-100 dark:bg-[#642FCD]/20 text-slate-600 dark:text-[#DCCCF7] hover:text-slate-900 dark:hover:text-[#FFFFFF] hover:bg-slate-200 dark:hover:bg-[#642FCD]/30 transition"
-            aria-label="Close"
+            aria-label={tx(strings, 'Close')}
           >
             <X size={20} />
           </button>
@@ -165,16 +166,16 @@ export default function BookingModal({
           {/* Section 1: Customer Details */}
           <div className="p-5 rounded-2xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 space-y-4">
             <h4 className="text-xs font-bold text-[#642FCD] dark:text-[#DCCCF7] uppercase tracking-wider flex items-center gap-2 border-b border-slate-200 dark:border-[#642FCD]/20 pb-2">
-              <User size={15} className="text-[#642FCD]" /> Customer Profile & Billing Address
+              <User size={15} className="text-[#642FCD]" /> {tx(strings, 'Customer Profile & Billing Address')}
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Customer Name *</label>
+                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Customer Name *')}</label>
                 <input 
                   type="text" 
                   required
-                  placeholder="e.g. Ramesh Gupta"
+                  placeholder={tx(strings, 'e.g. Ramesh Gupta')}
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
                   className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-xs focus:outline-none focus:border-[#642FCD]"
@@ -182,11 +183,11 @@ export default function BookingModal({
               </div>
 
               <div>
-                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Phone Number *</label>
+                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Phone Number *')}</label>
                 <input 
                   type="tel" 
                   required
-                  placeholder="9876500001"
+                  placeholder={tx(strings, '9876500001')}
                   value={customerPhone}
                   onChange={(e) => setCustomerPhone(e.target.value)}
                   className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-xs focus:outline-none focus:border-[#642FCD]"
@@ -194,10 +195,10 @@ export default function BookingModal({
               </div>
 
               <div>
-                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Customer GSTIN (Optional)</label>
+                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Customer GSTIN (Optional)')}</label>
                 <input 
                   type="text" 
-                  placeholder="09AAACG1234F1Z1"
+                  placeholder={tx(strings, '09AAACG1234F1Z1')}
                   value={customerGstin}
                   onChange={(e) => setCustomerGstin(e.target.value)}
                   className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-xs focus:outline-none focus:border-[#642FCD] uppercase"
@@ -206,10 +207,10 @@ export default function BookingModal({
             </div>
 
             <div>
-              <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Billing Address</label>
+              <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Billing Address')}</label>
               <input 
                 type="text" 
-                placeholder="e.g. Civil Lines, Sultanpur"
+                placeholder={tx(strings, 'e.g. Civil Lines, Sultanpur')}
                 value={customerAddress}
                 onChange={(e) => setCustomerAddress(e.target.value)}
                 className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-xs focus:outline-none focus:border-[#642FCD]"
@@ -220,16 +221,16 @@ export default function BookingModal({
           {/* Section 2: Event Information */}
           <div className="p-5 rounded-2xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 space-y-4">
             <h4 className="text-xs font-bold text-[#642FCD] dark:text-[#DCCCF7] uppercase tracking-wider flex items-center gap-2 border-b border-slate-200 dark:border-[#642FCD]/20 pb-2">
-              <Building2 size={15} className="text-[#642FCD]" /> Function & Venue Location
+              <Building2 size={15} className="text-[#642FCD]" /> {tx(strings, 'Function & Venue Location')}
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="sm:col-span-1">
-                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Event / Function Name *</label>
+                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Event / Function Name *')}</label>
                 <input 
                   type="text" 
                   required
-                  placeholder="e.g. Gupta Wedding Ceremony"
+                  placeholder={tx(strings, 'e.g. Gupta Wedding Ceremony')}
                   value={eventName}
                   onChange={(e) => setEventName(e.target.value)}
                   className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-xs focus:outline-none focus:border-[#642FCD]"
@@ -237,7 +238,7 @@ export default function BookingModal({
               </div>
 
               <div>
-                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Event Date *</label>
+                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Event Date *')}</label>
                 <input 
                   type="date" 
                   required
@@ -248,11 +249,11 @@ export default function BookingModal({
               </div>
 
               <div>
-                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Venue Location *</label>
+                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Venue Location *')}</label>
                 <input 
                   type="text" 
                   required
-                  placeholder="e.g. Palace Ground, Sultanpur"
+                  placeholder={tx(strings, 'e.g. Palace Ground, Sultanpur')}
                   value={venue}
                   onChange={(e) => setVenue(e.target.value)}
                   className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-xs focus:outline-none focus:border-[#642FCD]"
@@ -265,25 +266,25 @@ export default function BookingModal({
           <div className="p-5 rounded-2xl bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-[#642FCD]/20 pb-2">
               <h4 className="text-xs font-bold text-[#642FCD] dark:text-[#DCCCF7] uppercase tracking-wider flex items-center gap-2">
-                <Boxes size={15} className="text-[#642FCD]" /> Gear & Tent House Requirements
+                <Boxes size={15} className="text-[#642FCD]" /> {tx(strings, 'Gear & Tent House Requirements')}
               </h4>
               <button 
                 type="button"
                 onClick={handleAddRequirement}
                 className="px-3 py-1 rounded-xl bg-[#642FCD]/10 dark:bg-[#642FCD]/20 text-[#642FCD] dark:text-[#DCCCF7] border border-[#642FCD]/30 text-xs font-semibold hover:bg-[#642FCD]/20 transition flex items-center gap-1"
               >
-                <Plus size={14} /> Add Item
+                <Plus size={14} /> {tx(strings, 'Add Item')}
               </button>
             </div>
 
             {/* Column Labels Fixed On Top */}
             <div className="hidden sm:grid grid-cols-12 gap-2 text-[11px] font-bold text-slate-500 dark:text-[#DCCCF7]/80 uppercase tracking-wider px-3 py-1 bg-slate-200/50 dark:bg-[#642FCD]/10 rounded-lg">
-              <div className="col-span-4">Select Gear</div>
-              <div className="col-span-3">Description / Name</div>
-              <div className="col-span-1 text-center">Qty</div>
-              <div className="col-span-1 text-center">Days</div>
-              <div className="col-span-2 text-right">Rate (₹)</div>
-              <div className="col-span-1 text-right">Action</div>
+              <div className="col-span-4">{tx(strings, 'Select Gear')}</div>
+              <div className="col-span-3">{tx(strings, 'Description / Name')}</div>
+              <div className="col-span-1 text-center">{tx(strings, 'Qty')}</div>
+              <div className="col-span-1 text-center">{tx(strings, 'Days')}</div>
+              <div className="col-span-2 text-right">{tx(strings, 'Rate (₹)')}</div>
+              <div className="col-span-1 text-right">{tx(strings, 'Action')}</div>
             </div>
 
             {/* Line Item Entry Rows */}
@@ -296,13 +297,13 @@ export default function BookingModal({
                     
                     {/* Select Preset from Stock */}
                     <div className="col-span-12 sm:col-span-4">
-                      <label className="block sm:hidden text-[10px] text-slate-500 dark:text-[#DCCCF7]/70 mb-0.5">Select Gear</label>
+                      <label className="block sm:hidden text-[10px] text-slate-500 dark:text-[#DCCCF7]/70 mb-0.5">{tx(strings, 'Select Gear')}</label>
                       <select 
                         value={req.itemId}
                         onChange={(e) => handleItemSelect(idx, e.target.value)}
                         className="w-full px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-xs focus:outline-none focus:border-[#642FCD]"
                       >
-                        <option value="" className="bg-white dark:bg-[#000000]">-- Custom / Stock Item --</option>
+                        <option value="" className="bg-white dark:bg-[#000000]">{tx(strings, '-- Custom / Stock Item --')}</option>
                         {inventoryItems.map(item => (
                           <option key={item.id} value={item.id} className="bg-white dark:bg-[#000000]">{item.name} (Stock: {item.totalQty})</option>
                         ))}
@@ -311,11 +312,11 @@ export default function BookingModal({
 
                     {/* Item Description / Name */}
                     <div className="col-span-12 sm:col-span-3">
-                      <label className="block sm:hidden text-[10px] text-slate-500 dark:text-[#DCCCF7]/70 mb-0.5">Description</label>
+                      <label className="block sm:hidden text-[10px] text-slate-500 dark:text-[#DCCCF7]/70 mb-0.5">{tx(strings, 'Description')}</label>
                       <input 
                         type="text"
                         required
-                        placeholder="Item name"
+                        placeholder={tx(strings, 'Item name')}
                         value={req.name}
                         onChange={(e) => handleRequirementChange(idx, 'name', e.target.value)}
                         className="w-full px-2.5 py-1.5 rounded-lg bg-slate-50 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-xs focus:outline-none focus:border-[#642FCD]"
@@ -324,7 +325,7 @@ export default function BookingModal({
 
                     {/* Quantity */}
                     <div className="col-span-4 sm:col-span-1">
-                      <label className="block sm:hidden text-[10px] text-slate-500 dark:text-[#DCCCF7]/70 mb-0.5 text-center">Qty</label>
+                      <label className="block sm:hidden text-[10px] text-slate-500 dark:text-[#DCCCF7]/70 mb-0.5 text-center">{tx(strings, 'Qty')}</label>
                       <input 
                         type="number"
                         min="1"
@@ -337,7 +338,7 @@ export default function BookingModal({
 
                     {/* Duration in Days */}
                     <div className="col-span-4 sm:col-span-1">
-                      <label className="block sm:hidden text-[10px] text-slate-500 dark:text-[#DCCCF7]/70 mb-0.5 text-center">Days</label>
+                      <label className="block sm:hidden text-[10px] text-slate-500 dark:text-[#DCCCF7]/70 mb-0.5 text-center">{tx(strings, 'Days')}</label>
                       <input 
                         type="number"
                         min="1"
@@ -350,7 +351,7 @@ export default function BookingModal({
 
                     {/* Daily Rate */}
                     <div className="col-span-3 sm:col-span-2">
-                      <label className="block sm:hidden text-[10px] text-slate-500 dark:text-[#DCCCF7]/70 mb-0.5 text-right">Rate (₹)</label>
+                      <label className="block sm:hidden text-[10px] text-slate-500 dark:text-[#DCCCF7]/70 mb-0.5 text-right">{tx(strings, 'Rate (₹)')}</label>
                       <input 
                         type="number"
                         min="0"
@@ -385,11 +386,11 @@ export default function BookingModal({
             {/* Advance Payment Entry */}
             <div className="space-y-4">
               <h4 className="text-xs font-bold text-[#642FCD] dark:text-[#DCCCF7] uppercase tracking-wider flex items-center gap-2 border-b border-slate-200 dark:border-[#642FCD]/20 pb-2">
-                <IndianRupee size={15} className="text-[#642FCD]" /> Advance Payment Record
+                <IndianRupee size={15} className="text-[#642FCD]" /> {tx(strings, 'Advance Payment Record')}
               </h4>
 
               <div>
-                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Advance Received (₹)</label>
+                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Advance Received (₹)')}</label>
                 <input 
                   type="number" 
                   min="0"
@@ -400,15 +401,15 @@ export default function BookingModal({
               </div>
 
               <div>
-                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">Payment Mode</label>
+                <label className="block text-xs text-slate-600 dark:text-[#DCCCF7] mb-1">{tx(strings, 'Payment Mode')}</label>
                 <select 
                   value={paymentMode}
                   onChange={(e) => setPaymentMode(e.target.value)}
                   className="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/40 text-slate-900 dark:text-[#FFFFFF] text-xs focus:outline-none focus:border-[#642FCD]"
                 >
-                  <option value="UPI" className="bg-white dark:bg-[#000000]">UPI (GPay/PhonePe/Paytm)</option>
-                  <option value="Cash" className="bg-white dark:bg-[#000000]">Cash Payment</option>
-                  <option value="Bank Transfer" className="bg-white dark:bg-[#000000]">Bank NEFT/RTGS</option>
+                  <option value="UPI" className="bg-white dark:bg-[#000000]">{tx(strings, 'UPI (GPay/PhonePe/Paytm)')}</option>
+                  <option value="Cash" className="bg-white dark:bg-[#000000]">{tx(strings, 'Cash Payment')}</option>
+                  <option value="Bank Transfer" className="bg-white dark:bg-[#000000]">{tx(strings, 'Bank NEFT/RTGS')}</option>
                 </select>
               </div>
 
@@ -420,19 +421,19 @@ export default function BookingModal({
                   onChange={(e) => setIsGstBill(e.target.checked)}
                   className="rounded bg-white dark:bg-[#000000] border-slate-300 dark:border-[#642FCD] text-[#642FCD] focus:ring-0 cursor-pointer"
                 />
-                <label htmlFor="gstToggle" className="cursor-pointer">Generate Official GST Tax Bill ({gstRate}%)</label>
+                <label htmlFor="gstToggle" className="cursor-pointer">{tx(strings, 'Generate Official GST Tax Bill')} ({gstRate}%)</label>
               </div>
             </div>
 
             {/* Total Calculation Card */}
             <div className="bg-white dark:bg-[#000000] p-4 rounded-xl border border-slate-200 dark:border-[#642FCD]/30 space-y-2 text-xs shadow-sm">
               <div className="flex justify-between text-slate-600 dark:text-[#DCCCF7]/80">
-                <span>Items Subtotal:</span>
+                <span>{tx(strings, 'Items Subtotal:')}</span>
                 <span>₹ {subtotal.toLocaleString('en-IN')}</span>
               </div>
 
               <div className="flex justify-between items-center text-slate-600 dark:text-[#DCCCF7]/80">
-                <span>Discount Offered:</span>
+                <span>{tx(strings, 'Discount Offered:')}</span>
                 <input 
                   type="number"
                   min="0"
@@ -450,17 +451,17 @@ export default function BookingModal({
               )}
 
               <div className="flex justify-between text-sm font-bold text-slate-900 dark:text-[#FFFFFF] pt-2 border-t border-slate-100 dark:border-[#642FCD]/30">
-                <span>Grand Total:</span>
+                <span>{tx(strings, 'Grand Total:')}</span>
                 <span>₹ {grandTotal.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</span>
               </div>
 
               <div className="flex justify-between text-xs text-slate-600 dark:text-[#DCCCF7] font-semibold pt-1">
-                <span>Advance Paid:</span>
+                <span>{tx(strings, 'Advance Paid:')}</span>
                 <span className="text-[#642FCD] dark:text-[#DCCCF7]">- ₹ {Number(advanceAmount).toLocaleString('en-IN')}</span>
               </div>
 
               <div className="flex justify-between text-sm font-extrabold text-slate-900 dark:text-[#FFFFFF] pt-2 border-t border-slate-200 dark:border-[#642FCD]/40">
-                <span>Remaining Balance Due:</span>
+                <span>{tx(strings, 'Remaining Balance Due:')}</span>
                 <span className="text-[#642FCD] dark:text-[#DCCCF7]">₹ {balanceDue.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</span>
               </div>
             </div>
@@ -474,13 +475,13 @@ export default function BookingModal({
               onClick={onClose}
               className="px-5 py-2.5 rounded-2xl bg-slate-100 dark:bg-[#000000] border border-slate-200 dark:border-[#642FCD]/30 text-slate-700 dark:text-[#DCCCF7] text-xs font-semibold hover:bg-slate-200 dark:hover:bg-[#642FCD]/20 transition"
             >
-              Cancel
+              {tx(strings, 'Cancel')}
             </button>
             <button 
               type="submit"
               className="px-6 py-2.5 rounded-2xl bg-[#642FCD] text-[#FFFFFF] font-bold text-xs hover:bg-[#642FCD]/80 transition shadow-lg shadow-[#642FCD]/30 flex items-center gap-2 border border-[#642FCD]"
             >
-              <Save size={16} /> Save & Confirm Booking
+              <Save size={16} /> {tx(strings, 'Save & Confirm Booking')}
             </button>
           </div>
 
